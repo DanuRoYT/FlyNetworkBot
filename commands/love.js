@@ -1,0 +1,28 @@
+const { RichEmbed } = require("discord.js");
+const { getMember } = require("../functions.js");
+
+module.exports.run = async (client, message, args) => {
+        // Get a member from mention, id, or username
+        let person = getMember(message, args[0]);
+
+        if (!person || message.author.id === person.id) {
+            person = message.guild.members
+                .filter(m => m.id !== message.author.id)
+                .random();
+        }
+
+        const love = Math.random() * 100;
+        const loveIndex = Math.floor(love / 10);
+        const loveLevel = "馃挅".repeat(loveIndex) + "馃挃".repeat(10 - loveIndex);
+
+        const embed = new RichEmbed()
+            .setColor("#ffb6c1")
+            .addField(`鈽� **${person.displayName}** loves **${message.member.displayName}** this much:`,
+            `馃挓 ${Math.floor(love)}%\n\n${loveLevel}`);
+
+        message.channel.send(embed);
+}
+
+module.exports.help = {
+    name: "love"
+}
